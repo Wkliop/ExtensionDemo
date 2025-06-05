@@ -78,7 +78,7 @@ function processUrlChange(url) {
         }
     }
   } catch (error) {
-      // 静默处理错误
+      console.error("处理URL变化时发生错误:", error);
   }
 }
 
@@ -130,7 +130,7 @@ function initContentScript() {
   
     state.contentScriptLoaded = true;
   } catch (error) {
-      // 静默处理错误
+      console.error("初始化内容脚本时发生错误:", error);
   }
 }
 
@@ -140,7 +140,7 @@ if (document.readyState === 'loading') {
     try {
       initContentScript();
     } catch (error) {
-        // 静默处理错误
+        console.error("DOMContentLoaded事件中初始化内容脚本时发生错误:", error);
     }
   });
 } else {
@@ -148,7 +148,7 @@ if (document.readyState === 'loading') {
   try {
     initContentScript();
   } catch (error) {
-      // 静默处理错误
+      console.error("直接初始化内容脚本时发生错误:", error);
   }
 }
 })();
