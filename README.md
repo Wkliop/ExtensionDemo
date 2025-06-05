@@ -39,7 +39,8 @@ function handle{网站名称}(pageInfo) {
   url: "example.com", // 网站域名
   routes: [
     {
-      path: "/dashboard/", // 路径匹配规则
+      path: "/dashboard", // 路径匹配规则
+      matchType: "pathPrefix", // 匹配方式(可选)，不设置时默认为"pathPrefix"
       handler: handleExample, // 对应处理函数
     },
     // 可添加多个路由规则
@@ -48,11 +49,46 @@ function handle{网站名称}(pageInfo) {
 ```
 
 路由匹配规则说明：
-- `/` - 匹配网站所有路径
-- `/path/` - 匹配该路径及所有子路径
-- `/path` - 精确匹配该路径段
-- `/path/*` - 通配符匹配
-- `/^正则表达式$/` - 正则表达式匹配
+- `path` - 路径匹配规则
+- `matchType` - 匹配方式(可选)，可选值：
+  - `"exact"` - 精确匹配(路径、参数、hash都必须完全一致)
+  - `"pathExact"` - 路径精确匹配(只匹配路径部分，忽略参数和hash)
+  - `"pathPrefix"` - 部分路径匹配(匹配以此开头的所有路径)
+  - `"regex"` - 正则表达式匹配
+
+匹配逻辑：
+- path="/"且不设置matchType：全部页面匹配
+- path="/"且设置matchType：按设置的matchType规则匹配
+- path!="/"且不设置matchType：默认使用"pathPrefix"(部分路径匹配)
+- path!="/"且设置matchType：按设置的matchType规则匹配
+
+示例：
+```javascript
+{
+  path: "/",  // 匹配所有页面
+  handler: handleAllPages
+},
+{
+  path: "/products",
+  matchType: "exact",  // 精确匹配，只匹配完全一致的URL
+  handler: handleProductsExact
+},
+{
+  path: "/catalog", 
+  matchType: "pathExact",  // 路径精确匹配，忽略参数和hash
+  handler: handleCatalog
+},
+{
+  path: "/blog", 
+  // 不设置matchType，默认使用pathPrefix匹配
+  handler: handleBlog
+},
+{
+  path: "/^\\\/users\\\/\\d+\\\/profile$/",
+  matchType: "regex",  // 正则表达式匹配
+  handler: handleUserProfile
+}
+```
 
 ### 2.3 在manifest.json添加脚本引用
 
@@ -384,7 +420,8 @@ function handleExampleSite(pageInfo) {
   url: "example.com",
   routes: [
     {
-      path: "/dashboard/",
+      path: "/dashboard",
+      matchType: "pathPrefix", // 可省略，默认为pathPrefix
       handler: handleExampleSite,
     },
   ],
