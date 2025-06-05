@@ -1,0 +1,76 @@
+{
+  "manifest_version": 3,
+  "name": "办公辅助插件",
+  "version": "0.0.1",
+  "description": "增强多个办公网站功能的浏览器插件",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "webNavigation",
+    "storage",
+    "scripting",
+    "cookies",
+    "notifications",
+    "contextMenus",
+    "downloads",
+    "history",
+    "identity",
+    "bookmarks",
+    "clipboardRead",
+    "clipboardWrite",
+    "declarativeNetRequest",
+    "management",
+    "pageCapture",
+    "alarms",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "core/utils.js",
+        "core/urlMonitor.js",
+        "core/storageManager.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "ui/expandButton.js",
+        "ui/centerModal.js",
+        "ui/excelTable.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "sites/handleAndfleet.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "siteManager.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }   
+  ]
+}
